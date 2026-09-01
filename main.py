@@ -1,30 +1,41 @@
 import fastf1
-import pandas as pd
-import matplotlib
 
 
 def main():
     print("F1 Race Strategy Analyzer")
     print("-------------------------")
 
-    print("Cache enabled.")
-
-    # Store downloaded FastF1 data in the local cache folder.
     fastf1.Cache.enable_cache("cache")
 
     print("Loading race data...")
 
-    # Get the 2024 Bahrain Grand Prix race session.
     session = fastf1.get_session(2024, "Bahrain", "R")
-
-    # Download/load the timing data for the session.
     session.load()
 
     print("\nRace loaded successfully!")
     print(f"Event: {session.event['EventName']}")
     print(f"Session: {session.name}")
-    print(f"Date: {session.date}")
     print(f"Drivers: {len(session.drivers)}")
+
+    # Select Max Verstappen's laps.
+    driver_laps = session.laps.pick_drivers("VER")
+
+    print("\nDriver: VER")
+    print(f"Number of laps: {len(driver_laps)}")
+
+    # Show a few useful columns from the first 10 laps.
+    columns_to_show = [
+        "LapNumber",
+        "LapTime",
+        "Compound",
+        "Stint",
+        "Position",
+        "PitInTime",
+        "PitOutTime",
+    ]
+
+    print("\nFirst 10 laps:")
+    print(driver_laps[columns_to_show].head(10))
 
 
 if __name__ == "__main__":
