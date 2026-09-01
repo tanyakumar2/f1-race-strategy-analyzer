@@ -10,8 +10,13 @@ def main():
 
     print("Loading race data...")
 
-    # Gets the 2024 Bahrain Grand Prix race session
-    session = fastf1.get_session(2024, "Bahrain", "R")
+    # Select session to analyze
+    year = 2024
+    circuit = "Bahrain"
+    session_type = "R"
+
+    # Gets the chosen session
+    session = fastf1.get_session(year, circuit, session_type)
 
     # Load lap times, tire data, driver information, and other session data
     session.load()
@@ -21,7 +26,7 @@ def main():
     print(f"Session: {session.name}")
     print(f"Drivers: {len(session.drivers)}")
 
-    # Select driver to analyize
+    # Select driver to analyze
     driver = "HAM"
 
     # Select driver's laps
@@ -44,7 +49,6 @@ def main():
     # Displays the relevant lap information for driver's first 20 laps
     print("\nFirst 20 laps:")
     print(driver_laps[columns_to_show].head(20))
-
 
     # Grouping driver's laps by stint
     print(f"\n{driver} Tire Strategy")
