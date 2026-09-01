@@ -21,10 +21,13 @@ def main():
     print(f"Session: {session.name}")
     print(f"Drivers: {len(session.drivers)}")
 
-    # Filtering race data to include only Verstappen's laps
-    driver_laps = session.laps.pick_drivers("VER")
+    # Select driver to analyize
+    driver = "HAM"
 
-    print("\nDriver: VER")
+    # Select driver's laps
+    driver_laps = session.laps.pick_drivers(driver)
+
+    print(f"\nDriver: {driver}")
     print(f"Number of laps: {len(driver_laps)}")
 
     # Selects relevant lap information
@@ -38,13 +41,13 @@ def main():
         "PitOutTime",
     ]
 
-    # Displays the relevant lap information for VER's first 20 laps
+    # Displays the relevant lap information for driver's first 20 laps
     print("\nFirst 20 laps:")
     print(driver_laps[columns_to_show].head(20))
 
 
     # Grouping driver's laps by stint
-    print("\nVER Tire Strategy")
+    print(f"\n{driver} Tire Strategy")
     print("-------------")
 
     # For each stint, this gives the stint number + all the laps in that stint
