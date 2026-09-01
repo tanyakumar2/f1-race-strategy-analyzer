@@ -126,6 +126,28 @@ def main():
             f"{stint_length} laps"
         )
 
+    # Calculate representative pace for each stint using clean laps
+    print(f"\n{driver} Representative Stint Pace")
+    print("--------------------------------")
+
+    for stint_number, stint_laps in clean_laps.groupby("Stint"):
+
+        # Get the tire compound used during this stint
+        compound = stint_laps["Compound"].iloc[0]
+
+        # Calculate the median lap time for the stint
+        median_lap_time = stint_laps["LapTimeSeconds"].median()
+
+        # Count how many clean laps were used
+        clean_lap_count = len(stint_laps)
+
+        print(
+            f"Stint {int(stint_number)}: "
+            f"{compound} | "
+            f"Median pace: {median_lap_time:.3f} seconds | "
+            f"{clean_lap_count} clean laps"
+        )
+
 # Run main() only when this file is executed directly
 if __name__ == "__main__":
     main()
