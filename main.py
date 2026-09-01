@@ -27,10 +27,16 @@ def main():
     print(f"Drivers: {len(session.drivers)}")
 
     # Select driver to analyze
-    driver = "HAM"
+    driver = "VER"
 
     # Select driver's laps
     driver_laps = session.laps.pick_drivers(driver)
+
+    # Creates a copy so we can add analysis columns
+    driver_laps = driver_laps.copy()
+
+    # Converts lap times from Pandas timedeltas to seconds
+    driver_laps["LapTimeSeconds"] = driver_laps["LapTime"].dt.total_seconds()
 
     print(f"\nDriver: {driver}")
     print(f"Number of laps: {len(driver_laps)}")
@@ -39,6 +45,7 @@ def main():
     columns_to_show = [
         "LapNumber",
         "LapTime",
+        "LapTimeSeconds",
         "Compound",
         "Stint",
         "Position",
