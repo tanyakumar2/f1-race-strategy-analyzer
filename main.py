@@ -70,8 +70,16 @@ def main():
         (driver_laps["LapTimeSeconds"] < lower_bound) | (driver_laps["LapTimeSeconds"] > upper_bound)
     )
 
+    # Keep only laps that are suitable for pace analysis.
+    clean_laps = driver_laps[
+        (~driver_laps["IsPitLap"])
+        & (~driver_laps["IsTrackStatusAffected"])
+        & (~driver_laps["IsOutlier"])
+    ].copy()
+
     print(f"\nDriver: {driver}")
     print(f"Number of laps: {len(driver_laps)}")
+    print(f"Clean laps available for pace analysis: {len(clean_laps)}")
 
     # Selects relevant lap information
     columns_to_show = [
