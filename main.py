@@ -148,6 +148,38 @@ def main():
             f"{clean_lap_count} clean laps"
         )
 
+    # Find the median pace of each stint
+    stint_median_pace = clean_laps.groupby("Stint")["LapTimeSeconds"].median()
+
+    # Find the fastest median stint pace.
+    fastest_stint_pace = stint_median_pace.min()
+
+    print(f"\n{driver} Observed Stint Pace Comparison")
+    print("-------------------------------------")
+
+    for stint_number, median_lap_time in stint_median_pace.items():
+
+        # Select the clean laps from this stint
+        stint_laps = clean_laps[clean_laps["Stint"] == stint_number]
+
+        # Get the tire compound used during this stint
+        compound = stint_laps["Compound"].iloc[0]
+
+        # Calculate how much slower this stint was than the fastest stint
+        pace_difference = median_lap_time - fastest_stint_pace
+
+        if pace_difference == 0:
+            comparison = "fastest stint"
+        else:
+            comparison = f"+{pace_difference:.3f} seconds"
+
+        print(
+            f"Stint {int(stint_number)}: "
+            f"{compound} | "
+            f"Median: {median_lap_time:.3f} seconds | "
+            f"{comparison}"
+        )
+
 # Run main() only when this file is executed directly
 if __name__ == "__main__":
     main()
