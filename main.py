@@ -38,6 +38,9 @@ def main():
     # Creates a copy so we can add analysis columns
     driver_laps = driver_laps.copy()
 
+    # Track how many laps each tire set has completed.
+    driver_laps["TireAge"] = driver_laps.groupby("Stint").cumcount() + 1
+
     # Converts lap times from Pandas timedeltas to seconds
     driver_laps["LapTimeSeconds"] = driver_laps["LapTime"].dt.total_seconds()
 
@@ -88,6 +91,7 @@ def main():
         "LapTimeSeconds",
         "Compound",
         "Stint",
+        "TireAge",
         "Position",
         "IsPitLap",
         "TrackStatus",
