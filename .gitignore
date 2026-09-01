@@ -1,0 +1,23 @@
+# Virtual environment
+.venv/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+
+# FastF1 downloaded cache
+cache/*
+!cache/.gitkeep
+
+# Generated or local data
+data/*
+!data/.gitkeep
+
+# macOS files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
