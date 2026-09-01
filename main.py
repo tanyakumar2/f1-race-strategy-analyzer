@@ -2,7 +2,6 @@ import fastf1
 import pandas as pd
 
 pd.set_option('display.max_columns', None)
-pd.set_option("display.expand_frame_repr", False)
 
 
 def main():
@@ -50,6 +49,27 @@ def main():
     # Flag laps affected by abnormal track status.
     driver_laps["IsTrackStatusAffected"] = driver_laps["TrackStatus"] != "1"
 
+    # Select laps that are eligible for outlier detection.
+    eligible_outlier_laps = driver_laps[
+        (~driver_laps["IsPitLap"]) & (~driver_laps["IsTrackStatusAffected"])
+    ]
+
+    # Calculate the first and third quartiles of lap times.
+    q1 = eligible_outlier_laps["LapTimeSeconds"].quantile(0.25)
+    q3 = eligible_outlier_laps["LapTimeSeconds"].quantile(0.75)
+
+    # Calculate the interquartile range (IQR).
+    iqr = q3 - q1
+
+    # Calculate the lower and upper outlier boundaries.
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+
+    # Flag lap times outside the 1.5 × IQR boundaries.
+    driver_laps["IsOutlier"] = (
+        (driver_laps["LapTimeSeconds"] < lower_bound) | (driver_laps["LapTimeSeconds"] > upper_bound)
+    )
+
     print(f"\nDriver: {driver}")
     print(f"Number of laps: {len(driver_laps)}")
 
@@ -64,6 +84,7 @@ def main():
         "IsPitLap",
         "TrackStatus",
         "IsTrackStatusAffected",
+        "IsOutlier",
         "PitInTime",
         "PitOutTime",
     ]
