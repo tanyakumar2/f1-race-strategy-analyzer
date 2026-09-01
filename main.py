@@ -38,6 +38,11 @@ def main():
     # Converts lap times from Pandas timedeltas to seconds
     driver_laps["LapTimeSeconds"] = driver_laps["LapTime"].dt.total_seconds()
 
+    # Flag laps where the driver entered/exited the pit lane.
+    driver_laps["IsPitLap"] = (
+        driver_laps["PitInTime"].notna() | driver_laps["PitOutTime"].notna()
+    )
+
     print(f"\nDriver: {driver}")
     print(f"Number of laps: {len(driver_laps)}")
 
@@ -49,6 +54,7 @@ def main():
         "Compound",
         "Stint",
         "Position",
+        "IsPitLap",
         "PitInTime",
         "PitOutTime",
     ]
