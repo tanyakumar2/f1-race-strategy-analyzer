@@ -1,4 +1,8 @@
 import fastf1
+import pandas as pd
+
+pd.set_option('display.max_columns', None)
+pd.set_option("display.expand_frame_repr", False)
 
 
 def main():
@@ -43,6 +47,9 @@ def main():
         driver_laps["PitInTime"].notna() | driver_laps["PitOutTime"].notna()
     )
 
+    # Flag laps affected by abnormal track status.
+    driver_laps["IsTrackStatusAffected"] = driver_laps["TrackStatus"] != "1"
+
     print(f"\nDriver: {driver}")
     print(f"Number of laps: {len(driver_laps)}")
 
@@ -55,6 +62,8 @@ def main():
         "Stint",
         "Position",
         "IsPitLap",
+        "TrackStatus",
+        "IsTrackStatusAffected",
         "PitInTime",
         "PitOutTime",
     ]
