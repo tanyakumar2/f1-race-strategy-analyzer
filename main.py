@@ -1,5 +1,6 @@
 import fastf1
 import pandas as pd
+import matplotlib.pyplot as plt
 
 pd.set_option('display.max_columns', None)
 
@@ -183,6 +184,38 @@ def main():
             f"Median: {median_lap_time:.3f} seconds | "
             f"{comparison}"
         )
+
+    # Plot lap time against tire age for each stint
+    for stint_number, stint_laps in clean_laps.groupby("Stint"):
+
+        # Get the tire compound used during this stint
+        compound = stint_laps["Compound"].iloc[0]
+
+        # Create a new figure for this stint
+        plt.figure()
+
+        # Plot tire age against lap time
+        plt.plot(
+            stint_laps["TireAge"],
+            stint_laps["LapTimeSeconds"],
+            marker="o"
+        )
+
+        # Add labels and title
+        plt.xlabel("Tire Age")
+        plt.ylabel("Lap Time (seconds)")
+        plt.title(
+            f"{driver} Stint {int(stint_number)} - {compound}"
+        )
+
+        # Add grid lines 
+        plt.grid(True)
+
+        # Adjust spacing so labels are not cut off
+        plt.tight_layout()
+
+        # Display the chart
+        plt.show()
 
 # Run main() only when this file is executed directly
 if __name__ == "__main__":
